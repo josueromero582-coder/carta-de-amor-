@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Carta de Amor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FFF5F8;
+      --card: #ffffff;
+      --accent: #E63946;
+      --muted: #6b7280;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(circle at 10% 10%, #fff0f4 0%, transparent 20%),
+        radial-gradient(circle at 90% 90%, #fff6f7 0%, transparent 20%), var(--bg);
+      padding: 2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 780px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 34px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      right: -120px;
+      top: -80px;
+      width: 420px;
+      height: 420px;
+      transform: rotate(15deg);
+      opacity: 0.08;
+      background: var(--accent);
+      border-radius: 50%;
+      filter: blur(32px);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ffd6dc, #ffb3bf);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #7a0014;
+      font-family: Playfair Display;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: Playfair Display, serif;
+      font-size: 28px;
+      color: #36121b;
+    }
+
+    p.lead {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .letter {
+      margin-top: 18px;
+      line-height: 1.7;
+      color: #2b2b2b;
+      font-size: 18px;
+      text-align: justify;
+      word-wrap: break-word;
+    }
+
+    .signature {
+      margin-top: 22px;
+      text-align: right;
+      font-family: Playfair Display;
+      font-size: 20px;
+      color: #5b1d2b;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .btn-print {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-heart {
+      background: var(--accent);
+      color: white;
+    }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 520px) {
+      .card {
+        padding: 20px;
+      }
+
+      .badge {
+        width: 46px;
+        height: 46px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      .letter {
+        font-size: 16px;
+      }
+
+      .signature {
+        font-size: 18px;
+      }
+    }
+
+    /* typing effect */
+    .typing {
+      white-space: pre-wrap;
+      display: inline-block;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      background: #000;
+      margin-left: 6px;
+      animation: blink 1s steps(2) infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card" role="article" aria-label="Carta de amor romántica">
+      <div class="heart" aria-hidden="true"></div>
+      <header>
+        <div class="badge">❤</div>
+        <div>
+          <h1>Para mi amor</h1>
+          <p class="lead">Una carta escrita con el corazón — un pequeño recuerdo de lo que significas para mí.</p>
+        </div>
+      </header>
+
+      <div class="letter" id="letter">
+        <span class="typing" id="typing"></span><span class="cursor" id="cursor"></span>
+      </div>
+
+      <div class="signature" id="signature">Con todo mi amor,<br>Josue</div>
+
+      <div class="controls">
+        <button class="btn-heart" id="revealBtn">Revelar carta</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const text = `Mi niña Vivis💗\n\nHello mua mua💗\nBueno, llevo días ayudándome de lo que he visto para hacerte algo especial. Esto es una carta para recordarte cuánto te amo, niña pochina. Te amo mi niña hermosa, aunque a veces te vuelvas loquita, te amo mucho.\n\nEsta carta es de lo que aprendí, y con eso te dedico esto: mua mua mua,\n Te amoooooooooooooooooooooooooooooooooooooooooooo💗`;
+
+    const typingEl = document.getElementById('typing');
+    const cursor = document.getElementById('cursor');
+    const revealBtn = document.getElementById('revealBtn');
+    const signature = document.getElementById('signature');
+
+    let revealed = false;
+
+    function typeText(fullText, el, speed = 28) {
+      el.textContent = '';
+      let i = 0;
+      const iv = setInterval(() => {
+        el.textContent += fullText.charAt(i);
+        i++;
+        if (i >= fullText.length) clearInterval(iv);
+      }, speed);
+    }
+
+    revealBtn.addEventListener('click', () => {
+      if (revealed) return;
+      revealed = true;
+      typeText(text, typingEl);
+      cursor.style.display = 'inline-block';
+      revealBtn.textContent = 'Carta mostrada';
+      revealBtn.disabled = true;
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      signature.style.opacity = 0;
+      signature.style.transition = 'opacity 600ms ease-in-out';
+      setTimeout(() => (signature.style.opacity = 1), 1200);
+    });
+  </script>
+</body>
+</html>
